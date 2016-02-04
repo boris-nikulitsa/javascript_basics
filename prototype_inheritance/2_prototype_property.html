@@ -1,0 +1,85 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Prototype Property</title>
+  <script>
+"use strict";
+
+/* Code example from https://learn.javascript.ru/new-prototype */
+
+function Animal(name) {
+    this.name = name;
+}
+Animal.prototype.eats = true;
+var animal = new Animal('rabbit');
+
+function Rabbit() {}
+Rabbit.prototype = {
+  eats: true
+}
+var rabbit_2;
+var rabbit = new Rabbit();
+
+function Rabbit2() {}
+Rabbit2.prototype = {
+  eats: true
+}
+var rabbit2 = new Rabbit2();
+/* nothing happens because there's no property rabbit2.eats
+   there's rabbit2.__proto__.eats */
+delete rabbit2.eats; 
+
+function Rabbit3() {}
+Rabbit3.prototype = {
+  eats: true
+}
+var rabbit3 = new Rabbit3();
+/* Removes defined property. I.e. removes defined property in prototype & rabbit3.__proto__.eats */
+delete Rabbit3.prototype.eats;
+
+function main() {
+    var result = analyze('Animal', 'animal') + 
+        analyze('Rabbit2', 'rabbit2', 'After call "delete rabbit2.eats"') + 
+        analyze('Rabbit3', 'rabbit3', 'After call "delete Rabbit3.prototype.eats"') + 
+        analyze('Rabbit', 'rabbit');
+    /* Changes defined property value */
+    Rabbit.prototype.eats = false;
+    result += analyze('Rabbit', 'rabbit', 'After call "Rabbit.prototype.eats = false"');
+    /* Rewrites prototype object, but it doesn't affect alreday created objects 
+       It's an interesting case which shows that obj.__proto__ = constructorFunction.prototype
+       Since we write another object into constructorFunction.prototype it doesn't modify object written in obj.__proto__
+    */
+    Rabbit.prototype = {};
+    result += analyze('Rabbit', 'rabbit', 'After call "Rabbit.prototype = {}"');
+    rabbit_2 = new Rabbit();
+    result += analyze('Rabbit', 'rabbit_2', 'After call "Rabbit.prototype = {}"');
+    /* Updates rabbit_2, but it doesn't update rabbit */
+    Rabbit.prototype.eats = true;
+    result += analyze('Rabbit', 'rabbit', 'After call "Rabbit.prototype.eats = true"');
+    result += analyze('Rabbit', 'rabbit_2', 'After call "Rabbit.prototype = {}"');
+    document.getElementById('welcome').innerHTML = result;
+}
+
+function analyze(constructorFunction, value, description) {
+    var result = '<br /><br />' + ( description === undefined ? '' : description + '<br />' );
+    result += '--- ' + constructorFunction + '--- <br />';
+    var properties_arr = Object.getOwnPropertyNames(eval(constructorFunction).prototype);
+    for (var i=0; i < properties_arr.length; ++i) {
+        result += constructorFunction + '.prototype.' + properties_arr[i] + ' = ' + eval(constructorFunction).prototype[properties_arr[i]] + '<br />';
+    }
+    result += '--- ' + value + '--- <br />';
+    result += value + '.__proto__ = ' + eval(value).__proto__ + '<br />';
+    result += value + '.__proto__.constructor = ' + eval(value).__proto__.constructor + '<br />';
+    for (var key in eval(value)) {
+        result += value + '.' + key + ' = ' + eval(value)[key] + '<br />';
+        result += value + '.hasOwnProperty(' + key + ') = ' + eval(value).hasOwnProperty(key) + '<br />';
+    }
+    return result;
+}
+   
+  </script>
+ </head>
+ <body onload="main()">
+  <div id="welcome"></div>
+ </body>
+</html>

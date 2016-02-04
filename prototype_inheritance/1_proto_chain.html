@@ -1,0 +1,43 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>__proto__ chain</title>
+  <script>
+"use strict";
+
+/* Code example from https://learn.javascript.ru/prototype */
+
+var animal = {
+  eats: true,
+  description: 'it\'s animal',
+  id: 1
+};
+
+var rabbit = {
+  jumps: true,
+  description: 'it\'s rabbit', 
+  id: 2,
+  __proto__: animal
+};
+
+/* deletes rabbit.id which does rabbit.__proto__.id (which is same as animal.id) visible */
+delete rabbit.id;
+/* does nothing because there's no rabbit.eats; there's only rabbit.__proto__.eats (which is same as animal.eats) */
+delete rabbit.eats;
+
+
+function main() {
+    var result = '';
+    for (var key in rabbit) {
+        result += 'rabbit.' + key + ' = ' + rabbit[key] + '<br />';
+        result += 'rabbit.hasOwnProperty(' + key + ') = ' + rabbit.hasOwnProperty(key) + '<br />';
+    }
+    document.getElementById('welcome').innerHTML = result;
+}
+   
+  </script>
+ </head>
+ <body onload="main()">
+  <div id="welcome"></div>
+ </body>
+</html>
