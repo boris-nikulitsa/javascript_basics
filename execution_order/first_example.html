@@ -1,0 +1,55 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Execution Order in JavaScript</title>
+  <script>
+
+var startDate;
+var result;
+
+function main() {
+    startDate = +new Date();
+    result = appendTimeShift('before firstExample execution');
+    firstExample();
+    result += appendTimeShift('after firstExample execution');
+    otherFunction();
+    result += appendTimeShift('after otherFunction execution');
+    trace();
+}
+
+function appendTimeShift(value) {
+    return value + ' [' + (+new Date() - startDate) + ' ms passed]<br />';
+}
+
+function trace() {
+    document.getElementById('result').innerHTML = result;
+}
+  
+/* Code examples from https://habrahabr.ru/company/tradingview/blog/178261/ */
+function firstExample() {
+    result += appendTimeShift('script started');
+    setTimeout(function(){
+        /* Callback code is executed only after firstExample function completed
+           So it proves that callback is executed only if execution finished for code block which set timeout
+        */
+        result += appendTimeShift('timed out function');
+        trace();
+    }, 5);
+    var endDate = +new Date() + 10;
+    while (+new Date() < endDate){
+        // busy loop for 10 ms
+    }
+    result += appendTimeShift('script finished');
+}
+
+function otherFunction() {
+    result += appendTimeShift('otherFunction called');
+}
+   
+  </script>
+ </head>
+ <body onload="main()">
+  <div><b>First Example Result</b></div><br />
+  <div id="result"></div><br />
+ </body>
+</html>

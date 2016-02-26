@@ -1,0 +1,54 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Execution Order in JavaScript</title>
+  <script>
+
+var startDate;
+var result;
+
+function main() {
+    startDate = +new Date();
+    result = appendTimeShift('before secondExample execution');
+    secondExample();
+    result += appendTimeShift('after secondExample execution');
+    trace();
+}
+
+function appendTimeShift(value) {
+    return value + ' [' + (+new Date() - startDate) + ' ms passed]<br />';
+}
+
+function trace() {
+    document.getElementById('result').innerHTML = result;
+}
+
+/* Code examples from https://habrahabr.ru/company/tradingview/blog/178261/ */
+function secondExample() {
+    var timeoutId;
+    setTimeout(function(){
+        result += appendTimeShift('timed out function');
+        trace();
+        clearTimeout(timeoutId);
+    }, 5);
+    timeoutId = setTimeout(function(){
+        /* It doesn't get executed because
+           1. there's 5 ms set for both timeouts
+           2. there's linear execution order for both timeouts; That is this timeout was set second and it was canceled before execution
+        */
+        result += appendTimeShift('timed out function 2');
+        trace();
+    }, 5);
+    var endDate = +new Date() + 10;
+    while (+new Date() < endDate){
+        // busy loop for 10 ms
+    }
+}
+
+  </script>
+ </head>
+ <body onload="main()">
+  <div><b>Second Example Result</b></div><br />
+  <div id="result"></div><br />
+ </body>
+</html>

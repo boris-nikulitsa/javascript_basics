@@ -1,0 +1,64 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Execution Order in JavaScript</title>
+  <script>
+
+var startDate;
+var result;
+
+function main() {
+    startDate = +new Date();
+    result = appendTimeShift('before thirdExample execution');
+    thirdExample();
+    result += appendTimeShift('after thirdExample execution');
+    document.getElementById('result').innerHTML = result;
+}
+
+function appendTimeShift(value) {
+    return value + ' [' + (+new Date() - startDate) + ' ms passed]<br />';
+}
+
+function trace() {
+    document.getElementById('result').innerHTML = result;
+}
+
+/* Code examples from https://habrahabr.ru/company/tradingview/blog/178261/ 
+   It demonstrates that interval callback doesn't get executed while there's other intrusction is being executed
+   Also it demonstrates specific aspects of interval execution in different browsers. E.g. there're results for 
+   
+ -- Google Chrome -- 
+[1005 ms passed]
+[3925 ms passed]
+[4006 ms passed]
+[5014 ms passed]
+
+ -- IE --
+ [1015 ms passed]
+ [3921 ms passed]
+ [4916 ms passed]
+ [5898 ms passed]
+ 
+   As you can see Google Chrome tries to execute callback at (N * timeout) ms after interval registration
+   while IE tries to execute callback at timeout ms after previous interval execution
+*/
+function thirdExample() {
+    setInterval(function(){
+        result += appendTimeShift('');
+        trace();
+    }, 1000);
+    setTimeout(function(){
+        var endDate = +new Date() + 2000;
+        while (+new Date() < endDate){
+            // busy loop for 2000 ms
+        }
+    }, 1900);
+}
+
+  </script>
+ </head>
+ <body onload="main()">
+  <div><b>Third Example Result</b></div><br />
+  <div id="result"></div><br />
+ </body>
+</html>
