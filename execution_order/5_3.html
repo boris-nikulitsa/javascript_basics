@@ -1,0 +1,16 @@
+<!-- async execution example -->
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Execution Order in JavaScript</title>
+ </head>
+ <body>
+  <script src="5.js" async> </script>
+  <div id="result1">First block is still not visible for the script</div><br />
+  <div id="result2">Second block is still not visible for the script</div><br />
+  <script> 
+    document.getElementById('result2').innerHTML += ' ( text added by synchronous script )';
+  </script>
+  <div id="result3">Third block is still not visible for the script</div><br />
+ </body>
+</html>

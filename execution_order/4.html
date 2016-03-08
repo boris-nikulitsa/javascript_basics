@@ -1,0 +1,28 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Execution Order in JavaScript</title>
+ </head>
+ <body onload="main()">
+  <div><b>Fourth Example Result</b></div><br />
+  <div id="result"></div><br />
+  <script>
+    /* Code example from https://habrahabr.ru/company/tradingview/blog/178261/ */
+    var startDate = +new Date();
+    document.getElementById('result').innerHTML += 'script 1' + ' [' + (+new Date() - startDate) + ' ms passed]<br />';
+    setTimeout(function(){
+        /* That code block were executed after script 2 for all browsers what I've tried. 
+           But there's information in article that sometimes timeout is being executed before script 2 */
+        document.getElementById('result').innerHTML += 'setTimeout from script 1' + ' [' + (+new Date() - startDate) + ' ms passed]<br />';
+    }, 5);
+    var endDate = +new Date() + 10;
+    while (+new Date() < endDate){
+        // busy loop for 10 ms
+    }
+    document.getElementById('result').innerHTML += 'script 1 finished' + ' [' + (+new Date() - startDate) + ' ms passed]<br />';
+  </script>
+  <script>
+    document.getElementById('result').innerHTML += 'script 2<br />';
+  </script>
+ </body>
+</html>
