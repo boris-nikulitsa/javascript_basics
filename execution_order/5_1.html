@@ -1,0 +1,13 @@
+<!-- That exanmple demonstrates that script is loaded synchronously -->
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Execution Order in JavaScript</title>
+ </head>
+ <body>
+  <div id="result1">First block is still not visible for the script</div><br />
+  <script src="5.js" > </script>
+  <div id="result2">Second block is still not visible for the script</div><br />
+  <div id="result3">Third block is still not visible for the script</div><br />
+ </body>
+</html>

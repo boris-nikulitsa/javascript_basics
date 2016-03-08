@@ -1,0 +1,23 @@
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Execution Order in JavaScript</title>
+ </head>
+ <body>
+ <!-- I saw that sometimes Google Chrome executes 6_1.js before 6_2.js and sometimes 6_2.js before 6_1.js -->
+  <script src="6_1.js" async> </script>
+  <script src="6_2.js" async> </script>
+  <div id="result1">One</div><br />
+  <div id="result2">Two</div><br />
+  <div id="result3">Three</div><br />
+  <div id="result4">For</div><br />
+  <div id="result5">Five</div><br />
+  <div id="result6">Six</div><br />
+  <div id="result7">Seven</div><br />
+  <div id="result8">Eight</div><br />
+  <div id="result9">Nine</div><br />
+  <div id="result10">Ten</div><br />
+  <div id="result11">Eleven</div><br />
+  <div id="result12">Twelve</div><br />
+ </body>
+</html>
