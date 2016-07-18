@@ -10,13 +10,31 @@ var result;
 function main() {
 	var value1 = null;
 	var value2;
-	result = 'typeof value1 !== "undefined" : ' + (typeof value1 !== "undefined");
+	result = 'value1: ' + value1 + '; value2: ' + value2;
 	result += '<br />';
-	result += 'value1: ' + value1;
+	result += 'typeof value1 !== "undefined" : ' + (typeof value1 !== "undefined");
 	result += '<br />';
 	result += 'typeof value2 !== "undefined" : ' + (typeof value2 !== "undefined");
 	result += '<br />';
-	result += 'value2: ' + value2;
+	result += 'typeof value1 != "undefined" : ' + (typeof value1 != "undefined");
+	result += '<br />';
+	result += 'typeof value2 != "undefined" : ' + (typeof value2 != "undefined");
+	result += '<br />';
+	result += 'value1 === null : ' + (value1 === null);
+	result += '<br />';
+	result += 'value2 === null : ' + (value2 === null);
+	result += '<br />';
+	result += 'value1 == null : ' + (value1 == null);
+	result += '<br />';
+	result += 'value2 == null : ' + (value2 == null);
+	result += '<br />';
+	result += 'value1 === undefined : ' + (value1 === undefined);
+	result += '<br />';
+	result += 'value2 === undefined : ' + (value2 === undefined);
+	result += '<br />';
+	result += 'value1 == undefined : ' + (value1 == undefined);
+	result += '<br />';
+	result += 'value2 == undefined : ' + (value2 == undefined);
     trace();
 }
 
